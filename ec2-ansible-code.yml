@@ -1,0 +1,33 @@
+---
+- name: create ec2
+  hosts: localhost
+  gather_facts: false
+  vars:
+    # Target AWS region
+    aws_region: "us-east-2"
+    # Canonical Ubuntu 24.04 LTS AMI ID for us-east-1 (Update based on your region)
+    ami_id: "ami-06475e8f54266e38e"
+    instance_type: "t3.micro"
+    # Name of an existing AWS EC2 key pair in your account
+    key_name: "Tarun"
+    # Name of an existing security group
+    security_group_name: "sg-00a7f8a1320112b6e"
+
+  tasks:
+    - name: Launch Amazon EC2 Instance
+      amazon.aws.ec2_instance:
+        name: "projects-deployment-hojass"
+        key_name: "{{ key_name }}"
+        instance_type: "{{ instance_type }}"
+        image_id: "{{ ami_id }}"
+        region: "{{ aws_region }}"
+        security_groups:
+          - "{{ security_group_name }}"
+        network:
+          assign_public_ip: true
+        wait: true
+      register: ec2_details
+
+    - name: Show details of the created instance
+      ansible.builtin.debug:
+        var: ec2_details.instances[0].public_ip_address
