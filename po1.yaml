@@ -10,7 +10,7 @@
           apiVersion: v1
           kind: Pod
           metadata:
-            name: Tarun-pod1
+            name: new-pod
             namespace: default
             labels:
               app: web
