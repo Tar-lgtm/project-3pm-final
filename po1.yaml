@@ -1,0 +1,22 @@
+---
+- name: Manage Kubernetes Pod Lifecycle
+  hosts: adserver
+  gather_facts: false
+  tasks:
+    - name: Create a new Nginx pod
+      kubernetes.core.k8s:
+        state: present
+        definition:
+          apiVersion: v1
+          kind: Pod
+          metadata:
+            name: Tarun-pod
+            namespace: default
+            labels:
+              app: web
+          spec:
+            containers:
+            - name: ng-cont-01
+              image: nginx:latest
+              ports:
+              - containerPort: 80
